@@ -14,9 +14,6 @@ struct CreateCategory: AsyncMigration {
             .id()
             .field("appId", .int, .required)
             .field("name", .string, .required)
-        
-            .field("dataClass_id", .uuid, .required, .references("dataClass", "id"))
-        
             .create()
     }
     

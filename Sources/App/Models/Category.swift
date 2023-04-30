@@ -23,19 +23,13 @@ final class Category: Model {
     
     @Field(key: "name")
     var name: String
-    
-    // Reference to the DataClass this Category is in.
-    @Parent(key: "dataClass_id")
-    var dataClass: DataClass
 
     init() { }
 
-    init(id: UUID? = nil, appId: Int, name: String, dataClassID: UUID) {
+    init(id: UUID? = nil, appId: Int, name: String) {
         self.id = id
         self.appId = appId
         self.name = name
-        
-        self.$dataClass.id = dataClassID
     }
 }
 

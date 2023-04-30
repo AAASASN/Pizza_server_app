@@ -19,9 +19,6 @@ struct CreateMeal: AsyncMigration {
             .field("categoryId", .int, .required)
             .field("categoryName", .string, .required)
             .field("image", .string, .required)
-        
-            .field("dataClass_id", .uuid, .required, .references("dataClass", "id"))
-        
             .create()
     }
     

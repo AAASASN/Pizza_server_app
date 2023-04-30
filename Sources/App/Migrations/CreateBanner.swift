@@ -14,9 +14,6 @@ struct CreateBanner: AsyncMigration {
             .id()
             .field("appId", .int, .required)
             .field("image", .string, .required)
-        
-            .field("dataClass_id", .uuid, .required, .references("dataClass", "id"))
-        
             .create()
     }
     
