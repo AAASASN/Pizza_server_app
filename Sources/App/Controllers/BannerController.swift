@@ -22,45 +22,47 @@ struct BannerController: RouteCollection {
     }
     
     // MARK: CRUD - Create (Добавление в базу данных одного обеда)
-    func createHandler (_ req: Request) throws -> EventLoopFuture<Banner> {
-        let banner = try req.content.decode (Banner.self)
-        return banner.save(on: req.db).map { banner }
+    func createHandler (_ req: Request) async throws -> Banner {
+        guard let banner = try? req.content.decode (Banner.self) else {
+            throw Abort(.custom(code: 499, reasonPhrase: "Не получилось декодировать контент в модель Banner"))
+        }
+        try await banner.save(on: req.db)
+        return banner
     }
     
     // MARK: CRUD - Retrieve (Получение всех данных из базы)
-    func getAllHandler(_ req: Request) -> EventLoopFuture<[Banner]> {
-        Banner.query(on: req.db) .all()
+    func getAllHandler(_ req: Request) async throws -> [Banner] {
+        try await Banner.query(on: req.db).all()
     }
 
     // MARK: CRUD - Retrieve (Получение одного обеда по ID)
-    func getHandler(_ req: Request) -> EventLoopFuture<Banner> {
-        Banner.find(req.parameters.get("bannerID"), on: req.db)
-            .unwrap(or: Abort(.notFound) )
+    func getHandler(_ req: Request) async throws -> Banner {
+        guard let banner = try await Banner.find(req.parameters.get("bannerID"), on: req.db) else {
+            throw Abort(.notFound)
+        }
+        return banner
     }
 
     // MARK: CRUD - Update (изменение одного обеда по ID)
-    func updateHandler(_ req: Request) throws -> EventLoopFuture<Banner> {
-
+    func updateHandler(_ req: Request) async throws -> Banner {
         let updatedBanner = try req.content.decode(Banner.self)
-
-        return Banner.find(
-            req.parameters.get("bannerID"),
-            on: req.db)
-        .unwrap(or: Abort(.notFound)).flatMap { banner in
-            banner.appId = updatedBanner.appId
-            banner.image = updatedBanner.image
-            return banner.save(on: req.db).map { banner }
+        guard let banner = try await Banner.find(req.parameters.get("bannerID"), on: req.db) else {
+            throw Abort(.notFound)
         }
+        banner.appId = updatedBanner.appId
+        banner.image = updatedBanner.image
+        try await banner.save(on: req.db)
+        return banner
     }
 
     // MARK: CRUD - Delete (удаление одного обеда по ID)
-    func deleteHandler(_ req: Request) -> EventLoopFuture<HTTPStatus> {
-        Banner.find(req.parameters.get ("bannerID"), on: req.db)
-            .unwrap (or: Abort (.notFound))
-            .flatMap { banner in banner.delete (on: req.db)
-                    .transform(to: .noContent)
-
-            }
+    func deleteHandler(_ req: Request) async throws ->HTTPStatus {
+        guard let banner = try await Banner.find(req.parameters.get ("bannerID"), on: req.db) else {
+            throw Abort(.notFound)
+        }
+        try await banner.delete(on: req.db)
+        return .noContent
+        
     }
 }
 

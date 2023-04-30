@@ -22,19 +22,13 @@ final class Banner: Model {
     
     @Field(key: "image")
     var image: String
-    
-    // Reference to the DataClass this Banner is in.
-    @Parent(key: "dataClass_id")
-    var dataClass: DataClass
 
     init() { }
 
-    init(id: UUID? = nil, appId: Int, image: String, dataClassID: UUID) {
+    init(id: UUID? = nil, appId: Int, image: String) {
         self.id = id
         self.appId = appId
         self.image = image
-        
-        self.$dataClass.id = dataClassID
     }
 }
 

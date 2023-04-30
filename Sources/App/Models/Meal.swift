@@ -36,15 +36,9 @@ final class Meal: Model {
     @Field(key: "image")
     var image: String
     
-    // Reference to the DataClass this Meal is in.
-    @Parent(key: "dataClass_id")
-    var dataClass: DataClass
-    
     init() { }
 
-    init(id: UUID? = nil, appId: Int, name: String, description: String, priceFrom: Int, categoryID: Int, categoryName: String, image: String,
-         dataClassID: UUID
-    ) {
+    init(id: UUID? = nil, appId: Int, name: String, description: String, priceFrom: Int, categoryID: Int, categoryName: String, image: String) {
 
         self.id = id
         self.appId = appId
@@ -54,8 +48,6 @@ final class Meal: Model {
         self.categoryId = categoryId
         self.categoryName = categoryName
         self.image = image
-        
-        self.$dataClass.id = dataClassID
     }
 }
 

@@ -15,11 +15,6 @@ public func configure(_ app: Application) async throws {
         password: Environment.get("DATABASE_PASSWORD") ?? "rest_password",
         database: Environment.get("DATABASE_NAME") ?? "rest_database"
     ), as: .psql)
-
-    app.migrations.add(CreateTodo())
-    
-    // registration migration
-    app.migrations.add(CreateDataClass())
     
     app.migrations.add(CreateMeal())
     app.migrations.add(CreateBanner())
