@@ -2,23 +2,18 @@
 
 ## Серверное приложение [Test_Task_3_server_app_without_relationModel](https://github.com/AAASASN/Test_Task_3_server_app_without_relationModel)
 
-Оглавление
+### Оглавление
 
-Описаниe
-
-Развертывание
-
-​	Создание виртуальной машины и подключение 
-
-​	Первичные настройки
-
-​	Установка Swift
-
-​	Установка Vapor
-
-​	Создание проекта
-
-​	Установка Docker и создание базы данных
+	- [Описаниe](#Описание)
+ - Развертывание
+   - Развертывание
+   - Создание виртуальной машины и подключение 
+   - Первичные настройки
+   - Установка Swift
+   - Установка Vapor
+   - Создание тестового проекта Hello World
+   - Создание  проекта Test_Task_3_server_app_without_relationModel
+   - [Установка Docker и создание базы данных](#Установка-Docker)
 
 ​	Запуск
 
@@ -361,32 +356,36 @@ sudo mv .build/release/vapor /usr/local/bin
 Для демонстрации работы Vapor создаем новый проект HelloWorld
 
 ``` 
-vapor new HelloWorld -n
+vapor new HelloWorld
 ```
 
-при этом установив ` -n ` мы отказываемся от включения в проект фреймверков Fluent - работает с базами данных, Leaf - язык шаблонов в стиле языка swift для создания HTML-страниц,  и преднастроек для работы с базами данных
+при этом установив ` -n ` в ` vapor new HelloWorld -n `  мы отказываемся от включения в проект фреймверков Fluent - работает с базами данных, Leaf - язык шаблонов в стиле языка swift для создания HTML-страниц,  и преднастроек для работы с базами данных
 
 
 
-если все прошло хорошо появится следующее
+Для текущей версии стандартного шаблона HelloWorld необходимо дополнительно подключить библиотеку Fluent и выбрать базу данных SQLite.
 
 ```
 
-vapor@asm:~/toolbox$ vapor new HelloWorld -n
+vapor@asm:~/toolbox$ vapor new HelloWorld
 Cloning template...
 name: HelloWorld
 Would you like to use Fluent? (--fluent/--no-fluent)
-y/n> no
-fluent: No
+y/n> y
+fluent: Yes
+db: SQLite
 Would you like to use Leaf? (--leaf/--no-leaf)
-y/n> no
+y/n> n
 leaf: No
 Generating project files
 + Package.swift
 + entrypoint.swift
 + configure.swift
 + routes.swift
++ Todo.swift
++ CreateTodo.swift
 + .gitkeep
++ TodoController.swift
 + AppTests.swift
 + .gitkeep
 + Dockerfile
@@ -395,35 +394,36 @@ Generating project files
 + .dockerignore
 Creating git repository
 Adding first commit
+                                                                                                       
+                                                                                      **               
+                                                                                    **~~**             
+                                                                                  **~~~~~~**           
+                                                                                **~~~~~~~~~~**         
+                                                                              **~~~~~~~~~~~~~~**       
+                                                                            **~~~~~~~~~~~~~~~~~~**     
+                                                                          **~~~~~~~~~~~~~~~~~~~~~~**   
+                                                                         **~~~~~~~~~~~~~~~~~~~~~~~~**  
+                                                                        **~~~~~~~~~~~~~~~~~~~~~~~~~~** 
+                                                                       **~~~~~~~~~~~~~~~~~~~~~~~~~~~~**
+                                                                       **~~~~~~~~~~~~~~~~~~~~~~~~~~~~**
+                                                                       **~~~~~~~~~~~~~~~~~~~~~++++~~~**
+                                                                        **~~~~~~~~~~~~~~~~~~~++++~~~** 
+                                                                         ***~~~~~~~~~~~~~~~++++~~~***  
+                                                                           ****~~~~~~~~~~++++~~****    
+                                                                              *****~~~~~~~~~*****      
+                                                                                 *************         
+                                                                                                       
+                                                                        _       __    ___   ___   ___  
+                                                                       \ \  /  / /\  | |_) / / \ | |_) 
+                                                                        \_\/  /_/--\ |_|   \_\_/ |_| \ 
+                                                                          a web framework for Swift    
+                                                                                                       
+                                                                     Project HelloWorld has been created!
                                                                                        
-                                                                      **               
-                                                                    **~~**             
-                                                                  **~~~~~~**           
-                                                                **~~~~~~~~~~**         
-                                                              **~~~~~~~~~~~~~~**       
-                                                            **~~~~~~~~~~~~~~~~~~**     
-                                                          **~~~~~~~~~~~~~~~~~~~~~~**   
-                                                         **~~~~~~~~~~~~~~~~~~~~~~~~**  
-                                                        **~~~~~~~~~~~~~~~~~~~~~~~~~~** 
-                                                       **~~~~~~~~~~~~~~~~~~~~~~~~~~~~**
-                                                       **~~~~~~~~~~~~~~~~~~~~~~~~~~~~**
-                                                       **~~~~~~~~~~~~~~~~~~~~~++++~~~**
-                                                        **~~~~~~~~~~~~~~~~~~~++++~~~** 
-                                                         ***~~~~~~~~~~~~~~~++++~~~***  
-                                                           ****~~~~~~~~~~++++~~****    
-                                                              *****~~~~~~~~~*****      
-                                                                 *************         
-                                                                                       
-                                                        _       __    ___   ___   ___  
-                                                       \ \  /  / /\  | |_) / / \ | |_) 
-                                                        \_\/  /_/--\ |_|   \_\_/ |_| \ 
-                                                          a web framework for Swift    
-                                                                                       
-                                                     Project HelloWorld has been created!
-                                                                       
-                                              Use cd 'HelloWorld' to enter the project directory
-                     Then open your project, for example if using Xcode type open Package.swift or code . if using VSCode
-vapor@asm:~/toolbox$
+                                                              Use cd 'HelloWorld' to enter the project directory
+                                     Then open your project, for example if using Xcode type open Package.swift or code . if using VSCode
+vapor@asm:~/toolbox$ 
+
 ```
 
 
@@ -444,7 +444,7 @@ sudo ufw allow 8080
 
 
 
-запускаем приложение
+запускаем приложение, в качестве hostname указываем 0.0.0.0
 
 ```
 swift run App serve --hostname 0.0.0.0 --port 8080
@@ -452,8 +452,113 @@ swift run App serve --hostname 0.0.0.0 --port 8080
 
 
 
-Swift подгрузит все необходимые зависимости, сблидит прект и запустит его. Если все пройдет успешно на в терминале отобразится
+Swift подгрузит все необходимые зависимости, сблидит прект и запустит его. Если все пройдет успешно на в терминале отобразится как минииум
 
 ```
+vapor@asm:~/toolbox/HelloWorld$ swift run App serve --hostname 0.0.0.0 --port 8080
+Building for debugging...
+Build complete! (0.25s)
+[ NOTICE ] Server starting on http://0.0.0.0:8080
+```
+
+Проверить работтоспособность можно сделав запрос в терминале локальной машины или  через браузер по ссылке  `http://62.84.126.38:8080 ` - используем http, а не https
+
+```
+alexander@MacBook-Air-Aleksandr ~ % curl http://62.84.126.38:8080   
+It works!%                                                                     
+alexander@MacBook-Air-Aleksandr ~ % 
+```
+
+
+
+Для удаления проекта HelloWorld достаточно удалить папку HelloWorld в директории ` toolbox ` 
+
+```
+sudo rm -r HelloWorld
+```
+
+
+
+
+
+### Создание  проекта Test_Task_3_server_app_without_relationModel
+
+Переходим в директорию ` /home/vapor/toolbox ` и клонируем текущий проект 
+
+```
+git clone https://github.com/AAASASN/Test_Task_3_server_app_without_relationModel.git
+```
+
+появляется репозиторий ` Test_Task_3_server_app_without_relationModel `
+
+```
+vapor@asm:~/toolbox$ ls -l
+total 40
+-rw-rw-r-- 1 vapor vapor  438 May  2 21:33 Dockerfile
+-rw-rw-r-- 1 vapor vapor 1079 May  2 21:32 LICENSE.txt
+-rw-rw-r-- 1 vapor vapor  479 May  2 21:32 Makefile
+-rw-rw-r-- 1 vapor vapor 1941 May  2 21:34 Package.resolved
+-rw-rw-r-- 1 vapor vapor 1130 May  2 21:33 Package.swift
+-rw-rw-r-- 1 vapor vapor  940 May  2 21:32 README.md
+drwxrwxr-x 2 vapor vapor 4096 May  2 21:32 scripts
+drwxrwxr-x 4 vapor vapor 4096 May  2 21:32 Sources
+drwxrwxr-x 3 vapor vapor 4096 May  2 21:32 Tests
+drwxrwxr-x 6 vapor vapor 4096 May  2 22:22 Test_Task_3_server_app_without_relationModel
+vapor@asm:~/toolbox$ 
+```
+
+В проекте  ` Test_Task_3_server_app_without_relationModel ` используется база данных ` PostgreSQL ` Перед тем как собрать и запустить проект необходимо установить и запустить Docker, создать контейнер и запустить в неи базу данных PostgreSQL
+
+Установка Docker
+
+
+
+
+
+
+
+## Установка Docker
+
+Чтобы успешно установить Docker Desktop, ваш хост Linux должен соответствовать следующим общим требованиям:
+
+- 64-разрядная поддержка ядра и процессора для виртуализации.
+
+- Поддержка виртуализации KVM. Следуйте инструкциям по поддержке виртуализации KVM, чтобы проверить, включены ли модули ядра KVM и как обеспечить доступ к устройству kvm.
+
+- QEMU должен быть версии 5.2 или новше. Мы рекомендуем обновиться до последней версии.
+
+- Система инициализации.
+
+Среда Gnome, KDE или MATE Desktop.
+
+Для многих дистрибутивов Linux среда Gnome не поддерживает значки в трее. Чтобы добавить поддержку значков в трее, необходимо установить расширение Gnome. Например, AppIndicator.
+
+Не менее 4 ГБ оперативной памяти.
+
+Включите настройку сопоставления идентификаторов в пространствах имен пользователей, см. раздел Общий доступ к файлам.
+
+
+
+Проверяем поддерживает ли ВМ виртуализацию KVM
+
+```
+egrep -c '(vmx|svm)' /proc/cpuinfo
+```
+
+Если ответ 0 значит железо не позволяет работать с KVM или поставщик ВМ заблокировал эту функцию и нужно рассмотреть другой тариф. Если ответ больше 0 то все ок и можно продолжить насторойку.
+
+Включаем виртуализацию
+
+```
+modprobe kvm
+```
+
+
+
+В зависимости от процессора хост-машины должен быть загружен соответствующий модуль: ()
+
+```
+modprobe kvm_intel  # Intel processors
+modprobe kvm_amd    # AMD processors
 ```
 
