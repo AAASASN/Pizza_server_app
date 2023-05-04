@@ -1,29 +1,50 @@
 
 
+
+
 ## Серверное приложение [Test_Task_3_server_app_without_relationModel](https://github.com/AAASASN/Test_Task_3_server_app_without_relationModel)
+
+
+
+Тестовое серверное приложение написано на языке Swift 5.8 с использованием фреймверка Vapor 4.0, фреймверка Fluent и базы данных PostgreSQL. Представляет из себя API для получения списка продуктов из меню пиццерии и позволяет получать три вида данных - перечень продуктов (meal), категории продуктов (categoty) и акционные банеры (banner). Отвечает на запосы типа GET, POST, PUT и DELETE. Мобильное приложение работающее с данным API находится по ссылке - ССЫЛКА и представляет из себя клон приложения Додо Пиццы.
+
+
 
 ### Оглавление
 
-	- [Описаниe](#Описание)
- - Развертывание
-   - Развертывание
-   - Создание виртуальной машины и подключение 
-   - Первичные настройки
-   - Установка Swift
-   - Установка Vapor
-   - Создание тестового проекта Hello World
-   - Создание  проекта Test_Task_3_server_app_without_relationModel
-   - [Установка Docker и создание базы данных](#Установка-Docker)
+1. [Описаниe API](#Описаниe-API)
 
-​	Запуск
+2. [Развертывание на Mac локально](#Развертывание-на-Mac-локально)
+
+3. [Развертывание на VPS/VDS](#Развертывание-на-VPS/VDS)
+
+   - [Создание виртуальной машины и подключение](#Создание виртуальной машины и подключение)
+
+   - [Первичные настройки](#Первичные-настройки)
+
+   - [Установка Swift](#Установка-Swift)
+
+   - [Установка Vapor](#Установка Vapor)
+
+   - [Создание тестового проекта HelloWorld](#Создание тестового проекта HelloWorld)
+
+   - [Создание  проекта Test_Task_3_server_app_without_relationModel](#Создание  проекта Test_Task_3_server_app_without_relationModel)
+   - [Tmux](#Tmux)
+   - [Демонизация приложения](#Демонизация приложения)
+
+4. [Развертывание с использованием Docker](#Развертывание-с-использованием-Docker)
+
+5. [Ссылки](#Ссылки)
 
 
 
-В данном руководстве используется версии Ubuntu 22.04, Swift 5.8, Vapor 5.4.0
 
-### Описаниe
 
-Это серверное приложение  создано как API мобильного приложения Додо Пица -  [место для ссылки](http://example.com/link "Я ссылка"). Окликается на запосы типа GET, POST, PUT, DELETE и позволяет получать данные в виде JSON:
+## 1. Описаниe API 
+
+[Наверх](#Оглавление)
+
+Работает с запосами типа GET, POST, PUT, DELETE, позволяет получать данные в виде JSON:
 
 по запросу на http://XXX.XXX.XXX.XXX/api/meals возвращает
 
@@ -115,21 +136,56 @@
 
 
 
-### Развертывание
+
+
+
+
+
+
+## Развертывание на Mac локально
+
+[Наверх](#Оглавление)
+
+
+
+```
+
+
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+## Развертывание на VPS/VDS
+
+[Наверх](#Оглавление)
+
+
 
 ### Создание виртуальной машины и подключение 
 
-Для создания ВМ я воспользовался сервисом [Yandex Cloud](https://cloud.yandex.ru), в качестве орерационной системы выбрал Ubuntu 22.04 . Для подключения к ВМ используется протокол SSH, он основан на использовании пары ключей: открытый ключ размещается на ВМ, а закрытый ключ хранится у пользователя. Для создания ключей нужно дать команду в терминале:
+[Наверх](#Оглавление)
+
+Для создания VM я воспользовался сервисом [Yandex Cloud](https://cloud.yandex.ru), в качестве орерационной системы выбрал Ubuntu 22.04 . Для подключения к VM используется протокол SSH, он основан на использовании пары ключей: открытый ключ размещается на VM, а закрытый ключ хранится у пользователя. Для создания ключей нужно дать команду в терминале:
 
 ```
 ssh-keygen -t rsa -b 2048 -f ~/.ssh/id_rsa
 ```
 
-Будет предложено ввести пароль, затем в директории ~/.ssh будет созданы файлики вида `id_rsa.pub`  и `id_rsa` . Если файликов в папке  ~/.ssh не оказалось следует поискать их в корневой директории текущуго пользователя и переместить их в  ~/.ssh. Октрытый ключ должен храниться на ВМ и сообщается ей при ее создании, а закрытый `id_rsa`  всегда должен храниться в директории ~/.ssh.
+Будет предложено ввести пароль, затем в директории ~/.ssh будет созданы файлики вида `id_rsa.pub`  и `id_rs ` . Если файликов в папке  ~/.ssh не оказалось следует поискать их в корневой директории текущуго пользователя и переместить их в  ~/.ssh. Октрытый ключ должен храниться на ВМ и сообщается ей при ее создании, а закрытый `id_rsa`  всегда должен храниться в директории ~/.ssh.
 
-Открываем любым текстовым редактором файлик с публичным ключем  `id_rsa.pub` ,  копируем из него весь текст - он имеет вид -  `ssh-ed25519 AAAAC3NzaC1lZDI1NTE5ABFLIFyapYheN7OZNhTaNqEHefjmU5mtzK7roNnfzL+gRPCz`. При создвнии ВМ вставляем открытый ключ в соответствующее поле в панели управления сервиса.
+Открываем любым текстовым редактором файлик с публичным ключем  `id_rsa.pub` ,  копируем из него весь текст - он имеет вид -  `ssh-ed25519 AAAAC3NzaC1lZDI1NTE5ABFLIFyapYheN7OZNhTaNqEHefjmU5mtzK7roNnfzL+gRPCz`. Открытый ключ вставляем в соответствующее поле в панели управления при создании VM.
 
-Подключаемся через терминал командой типа `ssh asm@51.250.111.32`  где asm это имя пользователя, 51.250.111.32  адрес указанного при создании ВМ. Водим пароль указаный при создании  ssh-ключа
+Подключаемся через терминал командой типа `ssh asm@51.250.111.32`  где asm это имя пользователя, 51.250.111.32  адрес назначеный VM при создании. Водим пароль указаный при создании  ssh-ключа.
 
 ```
 ssh asm@51.250.111.32
@@ -139,32 +195,33 @@ ssh asm@51.250.111.32
 
 ### Первичные настройки
 
-Далее все команды вводим с указанием прав суперпользователя `sudo` 
+[Наверх](#Оглавление)
 
-Конфигурация Firewall
+
+
+Далее все команды вводим с указанием прав суперпользователя `sudo` .
+
+Конфигурация Firewall.
 
 ```
 sudo ufw allow OpenSSH
+```
+
+```
 sudo ufw enable
 ```
 
-
-
- Создаем отдельного пользователя, как пример - vapor
+ Создаем отдельного пользователя, как пример - vapor.
 
 ```
 sudo adduser vapor
 ```
 
-
-
-Наделяем его правами суперпользователя
+Наделяем пользователя `vapor` правами суперпользователя
 
 ```
 sudo usermod -aG sudo vapor
 ```
-
-
 
 Копируем авторизованные ключи SSH пользователя root только что созданному пользователю. Это позволит войти в SSH в качестве нового пользователя.
 
@@ -172,9 +229,7 @@ sudo usermod -aG sudo vapor
 sudo rsync --archive --chown=vapor:vapor ~/.ssh /home/vapor
 ```
 
-
-
-Перезаходим под пользователем `vapor` 
+Перезаходим под пользователем `vapor` .
 
 ```
 exit
@@ -183,17 +238,39 @@ ssh vapor@51.250.111.32
 
 
 
-
-
 ### Установка Swift
+
+[Наверх](#Оглавление)
 
 Установка необходимых зависимостей Swift.
 
 ```
 sudo apt-get update
+```
+
+```
 sudo apt-get install binutils git gnupg2 libc6-dev libcurl4-openssl-dev 
      \ libedit2 libgcc-9-dev libpython3.8 libsqlite3-0 libstdc++-9-dev 
      \ libxml2-dev libz3-dev pkg-config tzdata unzip zlib1g-dev
+```
+
+```
+sudo apt-get install \
+          binutils \
+          git \
+          gnupg2 \
+          libc6-dev \
+          libcurl4 \
+          libedit2 \
+          libgcc-9-dev \
+          libpython2.7 \
+          libsqlite3-0 \
+          libstdc++-9-dev \
+          libxml2 \
+          libz3-dev \
+          pkg-config \
+          tzdata \
+          zlib1g-dev
 ```
 
 
@@ -218,7 +295,7 @@ vapor@asm:~$
 Распаковываем его при помощи встроенного в операционную систему инструмента `tar` 
 
 ```
-tar xzf swift-5.8-RELEASE-ubuntu22.04.tar.gz
+  tar xzf swift-5.8-RELEASE-ubuntu22.04.tar.gz
 ```
 
 распаковка может занять продолжительное время, ждем
@@ -231,6 +308,14 @@ total 531396
 drwxrwxr-x 3 vapor vapor      4096 May  2 12:58 swift-5.8-RELEASE-ubuntu22.04
 -rw-r--r-- 1 root  root  544139004 Mar 30 23:16 swift-5.8-RELEASE-ubuntu22.04.tar.gz
 vapor@asm:~$ 
+```
+
+
+
+затем можно удалить архив если на VM мало места
+
+```
+sudo rm -r swift-5.8-RELEASE-ubuntu22.04.tar.gz
 ```
 
 
@@ -281,6 +366,8 @@ vapor@asm:~$
 
 ### Установка Vapor
 
+[Наверх](#Оглавление)
+
 находясь в корневой папке пользователя клонируем Vapor Toolbox
 
 ```
@@ -304,46 +391,11 @@ git checkout 18.6.0
 swift build -c release --disable-sandbox --enable-test-discovery
 ```
 
-если сборка завершилась с ошибкой - возможно не хватает некоторых зависимостей, установыим их командой
-
-```
-sudo apt-get update
-```
-
-и
-
-```
-sudo apt-get install \
-          binutils \
-          git \
-          gnupg2 \
-          libc6-dev \
-          libcurl4 \
-          libedit2 \
-          libgcc-9-dev \
-          libpython2.7 \
-          libsqlite3-0 \
-          libstdc++-9-dev \
-          libxml2 \
-          libz3-dev \
-          pkg-config \
-          tzdata \
-          zlib1g-dev
-```
-
-
-
-затем пробуем еще раз собрать
-
-```
-swift build -c release --disable-sandbox --enable-test-discovery
-```
-
 
 
 затем перемещаем бинарник в папку ` /usr/local/bin `
 
-```
+```bash
 sudo mv .build/release/vapor /usr/local/bin
 ```
 
@@ -351,7 +403,9 @@ sudo mv .build/release/vapor /usr/local/bin
 
 
 
-### Создание проекта
+### Создание тестового проекта HelloWorld
+
+[Наверх](#Оглавление)
 
 Для демонстрации работы Vapor создаем новый проект HelloWorld
 
@@ -365,7 +419,7 @@ vapor new HelloWorld
 
 Для текущей версии стандартного шаблона HelloWorld необходимо дополнительно подключить библиотеку Fluent и выбрать базу данных SQLite.
 
-```
+```bash
 
 vapor@asm:~/toolbox$ vapor new HelloWorld
 Cloning template...
@@ -483,6 +537,8 @@ sudo rm -r HelloWorld
 
 ### Создание  проекта Test_Task_3_server_app_without_relationModel
 
+[Наверх](#Оглавление)
+
 Переходим в директорию ` /home/vapor/toolbox ` и клонируем текущий проект 
 
 ```
@@ -507,58 +563,266 @@ drwxrwxr-x 6 vapor vapor 4096 May  2 22:22 Test_Task_3_server_app_without_relati
 vapor@asm:~/toolbox$ 
 ```
 
+
+
 В проекте  ` Test_Task_3_server_app_without_relationModel ` используется база данных ` PostgreSQL ` Перед тем как собрать и запустить проект необходимо установить и запустить Docker, создать контейнер и запустить в неи базу данных PostgreSQL
 
 Установка Docker
 
-
-
-
-
-
-
-## Установка Docker
-
-Чтобы успешно установить Docker Desktop, ваш хост Linux должен соответствовать следующим общим требованиям:
-
-- 64-разрядная поддержка ядра и процессора для виртуализации.
-
-- Поддержка виртуализации KVM. Следуйте инструкциям по поддержке виртуализации KVM, чтобы проверить, включены ли модули ядра KVM и как обеспечить доступ к устройству kvm.
-
-- QEMU должен быть версии 5.2 или новше. Мы рекомендуем обновиться до последней версии.
-
-- Система инициализации.
-
-Среда Gnome, KDE или MATE Desktop.
-
-Для многих дистрибутивов Linux среда Gnome не поддерживает значки в трее. Чтобы добавить поддержку значков в трее, необходимо установить расширение Gnome. Например, AppIndicator.
-
-Не менее 4 ГБ оперативной памяти.
-
-Включите настройку сопоставления идентификаторов в пространствах имен пользователей, см. раздел Общий доступ к файлам.
-
-
-
-Проверяем поддерживает ли ВМ виртуализацию KVM
-
 ```
-egrep -c '(vmx|svm)' /proc/cpuinfo
-```
-
-Если ответ 0 значит железо не позволяет работать с KVM или поставщик ВМ заблокировал эту функцию и нужно рассмотреть другой тариф. Если ответ больше 0 то все ок и можно продолжить насторойку.
-
-Включаем виртуализацию
-
-```
-modprobe kvm
+sudo apt  install docker.io
 ```
 
 
 
-В зависимости от процессора хост-машины должен быть загружен соответствующий модуль: ()
+Запуск базы данных PostgreSQL с параметрами 
 
 ```
-modprobe kvm_intel  # Intel processors
-modprobe kvm_amd    # AMD processors
+sudo docker run --name restaurant \
+	-e POSTGRES_DB=rest_database\
+	-e POSTGRES_USER=rest_username\
+	-e POSTGRES_PASSWORD=rest_password\
+	-p 5432:5432 -d postgres
 ```
 
+
+
+если все прошло успешно отобразится что то типа
+
+```sh
+vapor@asm:~/toolbox$ sudo docker run --name restaurant \
+        -e POSTGRES_DB=rest_database\
+        -e POSTGRES_USER=rest_username\
+        -e POSTGRES_PASSWORD=rest_password\
+        -p 5432:5432 -d postgres
+Unable to find image 'postgres:latest' locally
+latest: Pulling from library/postgres
+9e3ea8720c6d: Pull complete 
+7782b3e1be4b: Pull complete 
+247ec4ff783a: Pull complete 
+f7ead6900700: Pull complete 
+e7afdbe9a191: Pull complete 
+3ef71fe7cece: Pull complete 
+1459ebb56be5: Pull complete 
+3595124f6861: Pull complete 
+dd8e229a2a13: Pull complete 
+8cf43a35dc10: Pull complete 
+2fac9b4aab2f: Pull complete 
+b3f90da87261: Pull complete 
+5f7e3ef14a3b: Pull complete 
+Digest: sha256:482e881c53826bd27044a88cafa86305958142472cfe49e0facc6671eaa2fbf5
+Status: Downloaded newer image for postgres:latest
+8837363a7a4e3fa08147e3b7ecfd6dae1ecc4c3230ec859f2b332a6fc9eafbd2
+vapor@asm:~/toolbox$ 
+```
+
+Для того что бы  Docker автоматически стартовал контейнер  после падения или после перезагрузки VM выполняем команду
+
+```
+sudo docker update --restart unless-stopped restaurant
+```
+
+переходим в папку с новым проектом
+
+```
+cd Test_Task_3_server_app_without_relationModel
+```
+
+открываем порт 8080
+
+```
+sudo ufw allow 8080
+```
+
+запускаем приложение, в качестве hostname указываем 0.0.0.0
+
+```
+swift run App serve --hostname 0.0.0.0 --port 8080
+```
+
+Swift подгрузит все необходимые зависимости, сблидит прект сделает миграцию моделей в базу данных и запустит его. Если все пройдет успешно на в терминале отобразится как минииум
+
+```
+.
+..
+...
+Working copy of https://github.com/apple/swift-nio.git resolved at 2.51.0
+Building for debugging...
+[2289/2289] Linking App
+Build complete! (259.29s)
+[ INFO ] [Migrator] Starting prepare [database-id: psql, migration: App.CreateMeal]
+[ INFO ] [Migrator] Finished prepare [database-id: psql, migration: App.CreateMeal]
+[ INFO ] [Migrator] Starting prepare [database-id: psql, migration: App.CreateBanner]
+[ INFO ] [Migrator] Finished prepare [database-id: psql, migration: App.CreateBanner]
+[ INFO ] [Migrator] Starting prepare [database-id: psql, migration: App.CreateCategory]
+[ INFO ] [Migrator] Finished prepare [database-id: psql, migration: App.CreateCategory]
+[ NOTICE ] Server starting on http://0.0.0.0:8080
+```
+
+После этого можно поробовать постлать запросы через браузер или Postman
+
+```
+[ INFO ] GET /api/categories [request-id: 2D1A1246-9C74-45E7-9C26-B1539E7071A6]
+[ INFO ] GET /api/banners [request-id: 252D7946-7187-4F48-8744-87413110D97D]
+[ INFO ] GET /api/meals [request-id: 7DFE43FA-0C97-41FD-8ECC-8E3B1C7452CA]
+[ INFO ] POST /api/meals [request-id: 2F2A5C44-2C3C-4423-B55E-EB65E755AD7A]
+[ WARNING ] Abort.499: Не получилось декодировать контент в модель Meal [request-id: 2F2A5C44-2C3C-4423-B55E-EB65E755AD7A]
+[ INFO ] POST /api/meals [request-id: 7565FFB3-C1A3-413E-B4C4-42675669E1EA]
+[ INFO ] GET /api/categories [request-id: D568A86D-0938-4334-9793-1D46D391A874]
+```
+
+
+
+
+
+### Tmux
+
+[Наверх](#Оглавление)
+
+При зактытии окна терминала завершается сессия пользователя и все процессы запущенные им, приложение падает. Частично эту проблему может решить утилита **Screen** или **Tmux**(в Ubuntu установлен по умолчанию в CentOS нужно ставить отдельно)
+
+Даем команду
+
+```
+tmux attach
+```
+
+Делая так, вы сперва пытаетесь подключиться к уже существующему серверу tmux, если он существует. Если такого ещё нет — создаёте новый.
+
+```
+tmux new
+```
+
+После этого вы попадаете в полноценную консоль. 
+
+В ней уже можно запустить приложение командой
+
+```
+swift run App serve --hostname 0.0.0.0 --port 8080
+```
+
+не забыв предвариткльно перейти в папку с проектом
+
+***И вот теперь закрыв окно терминала приложение не упадет***. 
+
+Можно просто закрыть окно Tmux командой
+
+**Ctrl+b d** — отключиться 
+
+ ***В общем то и все,  можно закрыть терминал и приложение также продолжит работу***
+
+Если в открытом окошке Tmux с запущеным приложением дать команду ***Ctrl+b &*** —  окошко Tmux закроется и приложение упадет
+
+В одной сессии может быть сколько угодно окошек:
+**Ctrl+b c** — создать окошко;
+**Ctrl+b 0...9** — перейти в такое-то окошко;
+Ctrl+b p — перейти в предыдущее окошко;
+Ctrl+b n — перейти в следующее окошко;
+Ctrl+b l — перейти в предыдущее активное окошко (из которого вы переключились в текущее);
+Ctrl+b & — закрыть окошко (а можно просто набрать **`exit`** в терминале).
+
+В одном окошке может быть много панелей:
+**Ctrl+b %** — разделить текущую панель на две, по вертикали;
+**Ctrl+b "** — разделить текущую панель на две, по горизонтали (это кавычка, которая около Enter, а не Shift+2);
+**Ctrl+b** →←↑↓ — переходить между панелями;
+Ctrl+b x — закрыть панель (а можно просто набрать **`exit`** в терминале).
+
+Использование Tmux удобно использовать при разработке и тестировании. Для комерческого использования это не есть хорошая практика и необходимо преобразовать приложение в демона OS. Это позволит запускать его автоматически при старте OS, отслеживать его работу со стороны системы и перезагружать  если оно упало.
+
+
+
+### Демонизация приложения 
+
+[Наверх](#Оглавление)
+
+Допустим нам нужно что бы после перезагрузки VM сервис приложения поднимался автоматически,  для этого нужно чтобы
+
+- был запущен Vapor - он является демоном и стартует автоматически
+
+- был запущен Docker - он является демоном и стартует автоматически
+- в Docker был запущен контейнер `restaurant` с базой данных ( Docker должен запустить его если ранее была выполнена команда `sudo docker update --restart unless-stopped restaurant` , если нет выполняем ее. Так же контейнер можно запустить вручную командой  `sudo docker start restaurant` )
+- и было запущено приложение из директории ` /home/vapor/toolbox/Test_Task_3_server_app_without_relationModel` командой `swift run App serve --hostname 0.0.0.0 --port 8080` 
+
+
+
+Как это сделать и пойжет речь далее
+
+
+
+Нужно превратить наше приложение в демона. Для этого можно воспользоваться Systemd — менеджером системы и служб для Linux.
+
+Systemd запускает сервисы описанные в его конфигурации.
+Конфигурация состоит из множества файлов, которые называют юнитами.
+
+Все эти юниты разложены в трех каталогах:
+
+**/usr/lib/systemd/system/** – юниты из установленных пакетов RPM — всякие nginx, apache, mysql и прочее
+**/run/systemd/system/** — юниты, созданные в рантайме — тоже, наверное, нужная штука
+**/etc/systemd/system/** — юниты, созданные системным администратором — а вот сюда мы и положим свой юнит.
+
+
+
+Простейший стартап скрипт, он же unit для systemd: myunit.service
+
+```
+[Unit]
+Description=VaporUnit
+After=syslog.target
+After=network.target
+After=nginx.service
+After=mysql.service
+Requires=mysql.service
+Wants=redis.service
+
+[Service]
+Type=forking
+PIDFile=/home/vapor/toolbox/Test_Task_3_server_app_without_relationModel
+WorkingDirectory=/home/vapor/toolbox/Test_Task_3_server_app_without_relationModel
+
+User=vapor
+Group=vapor
+
+Environment=RACK_ENV=production
+
+OOMScoreAdjust=-1000
+
+ExecStart=/usr/local/bin/bundle exec service -C /work/www/myunit/shared/config/service.rb --daemon
+ExecStop=/usr/local/bin/bundle exec service -S /work/www/myunit/shared/tmp/pids/service.state stop
+ExecReload=/usr/local/bin/bundle exec service -S /work/www/myunit/shared/tmp/pids/service.state restart
+TimeoutSec=300
+
+[Install]
+WantedBy=multi-user.target 
+```
+
+
+
+
+
+
+
+
+
+## 4. Развертывание с использованием Docker
+
+[Наверх](#Оглавление)
+
+*Здесь будет описание сборки образа с приложением и разверывание в контейнере Docker.*
+
+
+
+
+
+## 5. Ссылки
+
+[Наверх](#Оглавление)
+
+работа с TMUX - https://habr.com/ru/articles/126996/
+
+шпаргалка по MarkDown - https://paulradzkov.com/2014/markdown_cheatsheet/
+
+статья по Systemd - https://habr.com/ru/companies/southbridge/articles/255845/
+
+
+
+ 
