@@ -2,7 +2,7 @@
 
 
 
-## Серверное приложение [Test_Task_3_server_app_without_relationModel](https://github.com/AAASASN/Test_Task_3_server_app_without_relationModel)
+## Серверное приложение [Pizza_server_app](https://github.com/AAASASN/Pizza_server_app)
 
 
 
@@ -27,7 +27,7 @@
    
    - [Создание тестового проекта HelloWorld](#Создание-тестового-проекта-HelloWorld)
    
-   - [Создание проекта Test_Task_3_server_app_without_relationModel](#Создание-проекта-Test_Task_3_server_app_without_relationModel)
+   - [Создание проекта Pizza_server_app](#Создание-проекта-Pizza_server_app)
    - [Tmux](#Tmux)
    - [Демонизация приложения](#Демонизация-приложения)
    
@@ -508,17 +508,17 @@ sudo rm -r HelloWorld
 
 
 
-### Создание проекта Test_Task_3_server_app_without_relationModel
+### Создание проекта Pizza_server_app
 
 [Наверх](#Оглавление)
 
 Переходим в директорию ` /home/vapor/toolbox ` и клонируем текущий проект.
 
 ```
-git clone https://github.com/AAASASN/Test_Task_3_server_app_without_relationModel.git
+git clone https://github.com/AAASASN/Pizza_server_app.git
 ```
 
-Появляется репозиторий ` Test_Task_3_server_app_without_relationModel `.
+Появляется репозиторий ` Pizza_server_app `.
 
 ```
 vapor@asm:~/toolbox$ ls -l
@@ -532,11 +532,11 @@ total 40
 drwxrwxr-x 2 vapor vapor 4096 May  2 21:32 scripts
 drwxrwxr-x 4 vapor vapor 4096 May  2 21:32 Sources
 drwxrwxr-x 3 vapor vapor 4096 May  2 21:32 Tests
-drwxrwxr-x 6 vapor vapor 4096 May  2 22:22 Test_Task_3_server_app_without_relationModel
+drwxrwxr-x 6 vapor vapor 4096 May  2 22:22 Pizza_server_app
 vapor@asm:~/toolbox$ 
 ```
 
-В проекте  ` Test_Task_3_server_app_without_relationModel ` используется база данных ` PostgreSQL ` Перед тем как собрать и запустить проект необходимо установить и запустить Docker, создать контейнер и запустить в неи базу данных PostgreSQL.
+В проекте  ` Pizza_server_app ` используется база данных ` PostgreSQL ` Перед тем как собрать и запустить проект необходимо установить и запустить Docker, создать контейнер и запустить в неи базу данных PostgreSQL.
 
 Установка Docker.
 
@@ -592,7 +592,7 @@ sudo docker update --restart unless-stopped restaurant
 Переходим в папку с новым проектом.
 
 ```
-cd Test_Task_3_server_app_without_relationModel
+cd Pizza_server_app
 ```
 
 Открываем порт 8080.
@@ -708,7 +708,7 @@ swift run App serve --hostname 0.0.0.0 --port 8080
 
 - был запущен Docker - он является демоном и стартует автоматически
 - в Docker был запущен контейнер `restaurant` с базой данных ( Docker должен запустить его если ранее была выполнена команда `sudo docker update --restart unless-stopped restaurant` , если нет выполняем ее. Так же контейнер можно запустить вручную командой  `sudo docker start restaurant` )
-- и было запущено приложение из директории ` /home/vapor/toolbox/Test_Task_3_server_app_without_relationModel` командой `swift run App serve --hostname 0.0.0.0 --port 8080` 
+- и было запущено приложение из директории ` /home/vapor/toolbox/Pizza_server_app` командой `swift run App serve --hostname 0.0.0.0 --port 8080` 
 
 
 
@@ -739,8 +739,8 @@ Wants=redis.service
 
 [Service]
 Type=forking
-PIDFile=/home/vapor/toolbox/Test_Task_3_server_app_without_relationModel
-WorkingDirectory=/home/vapor/toolbox/Test_Task_3_server_app_without_relationModel
+PIDFile=/home/vapor/toolbox/Pizza_server_app
+WorkingDirectory=/home/vapor/toolbox/Pizza_server_app
 
 User=vapor
 Group=vapor
